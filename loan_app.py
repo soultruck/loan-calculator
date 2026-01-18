@@ -22,7 +22,7 @@ def check_password():
         # 오픈채팅방 유도 버튼 (링크 수정 필요)
         st.markdown(
             """
-            <a href="https://open.kakao.com/o/your_link_here" target="_blank">
+            <a href="https://open.kakao.com/o/gY60Vcci" target="_blank">
                 <button style="
                     width: 100%;
                     background-color: #FEE500;
