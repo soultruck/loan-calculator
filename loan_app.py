@@ -8,45 +8,71 @@ st.set_page_config(page_title="전박사의 시크릿 계산기", layout="center
 # ==========================================
 def check_password():
     """비밀번호가 맞는지 확인하는 함수"""
+    
+    # 세션 상태 초기화
     if "password_correct" not in st.session_state:
         st.session_state.password_correct = False
 
+    # 로그인이 안 된 상태라면?
     if not st.session_state.password_correct:
         st.title("🔒 전박사의 VIP 부동산 계산기")
         st.markdown("### 부동산학(Real Estate) 데이터 분석 도구")
+        st.write("이 프로그램은 **전박사 부동산 멤버십** 전용입니다.")
         st.info("비밀번호를 입력해야 사용할 수 있습니다.")
 
-        # 오픈채팅방 유도 버튼 (입장코드 확인용)
+        # [수정 1] 입장 코드 확인 버튼 (HTML 허용 옵션 추가됨)
         st.markdown(
             """
-            <a href="https://open.kakao.com/o/suIKVcci"_blank">
-                <button style="width: 100%; background-color: #FEE500; color: #000000; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 20px;">
+            <a href="https://open.kakao.com/o/suIKVcci" target="_blank">
+                <button style="
+                    width: 100%;
+                    background-color: #FEE500;
+                    color: #000000;
+                    padding: 15px;
+                    border: none;
+                    border-radius: 10px;
+                    font-size: 18px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    margin-bottom: 20px;
+                    box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+                    ">
                     💬 입장 코드(비밀번호) 확인하기
                 </button>
             </a>
-            """, unsafe_allow_html=True
+            <p style="text-align:center; font-size:12px; color:grey;">
+            ※ 채팅방 공지사항에서 '입장코드'를 확인하세요.
+            </p>
+            """,
+            unsafe_allow_html=True  # <--- 이 부분이 핵심입니다!
         )
 
+        # 비밀번호 입력창
         password = st.text_input("비밀번호(Access Code) 입력", type="password")
+        
         if st.button("로그인"):
-            if password == "rich2026":  # [설정] 비밀번호
+            if password == "rich2026":  # [설정] 비밀번호 (원하시는 걸로 변경 가능)
                 st.session_state.password_correct = True
-                st.rerun()
+                st.rerun()  # 화면 새로고침
             else:
-                st.error("비밀번호가 틀렸습니다.")
-        return False
-    return True
+                st.error("비밀번호가 틀렸습니다. 채팅방 공지를 확인해주세요.")
+        
+        return False # 아직 로그인 안됨
+    
+    return True # 로그인 성공
 
 # ==========================================
-# [기능 2] 메인 프로그램
+# [기능 2] 메인 프로그램 (로그인 성공 시 실행)
 # ==========================================
 if check_password():
+    # --- 헤더 및 소개 ---
     st.title("🎓 전박사의 부동산 슈퍼 앱")
     st.markdown("### 2026년형 차세대 부동산 분석 알고리즘")
     
+    # 탭(Tab) 생성
     tab1, tab2 = st.tabs(["💰 대출 한도 분석", "🏆 청약 가점 진단"])
 
-    # [탭 1] 대출 한도 계산기 (여기에 영업 기능 추가!)
+    # [탭 1] 대출 한도 계산기
     with tab1:
         st.header("대출 한도 정밀 분석 (DSR 3단계)")
         st.info("💡 소득과 부채 정보를 입력하시면 전박사의 알고리즘이 분석합니다.")
@@ -59,7 +85,7 @@ if check_password():
             st.markdown("""
             **금융권 심사 기준(DSR)에 맞게 입력해야 오차가 없습니다.**
             1. **일반 대출:** (원금 + 이자) × 12개월
-            2. **★ 마이너스 통장:** (총 한도금액 ÷ 5년)
+            2. **★ 마이너스 통장:** (한도금액 ÷ 5년) 값 입력
             """)
 
         rate_input = st.number_input("예상 금리 (%)", value=4.0, step=0.1, key="rate")
@@ -100,13 +126,12 @@ if check_password():
             final_limit = min(ltv_limit, dsr_limit)
             constraint = "LTV(집값)" if final_limit == ltv_limit else "DSR(소득)"
 
-            # --- [결과 화면] ---
             st.divider()
             st.success(f"전박사 분석 결과: 예상 대출 한도는 **{int(final_limit // 1000000):,} 백만 원** 입니다.")
             st.caption(f"제약 요인: {constraint} 규제 적용됨")
 
-            # --- [핵심 추가 기능] 추가 대출 영업 버튼 (Call to Action) ---
-            st.markdown("---") # 구분선
+            # --- [수정 2] 추가 대출 영업 버튼 (HTML 허용 옵션 추가됨) ---
+            st.markdown("---")
             st.error("📉 **원하시는 만큼 한도가 안 나오셨나요?**")
             st.markdown("""
             DSR 규제 때문에 1금융권 한도는 여기까지입니다.
@@ -116,7 +141,6 @@ if check_password():
             궁금하시다면 아래 버튼을 눌러 **히든 솔루션**을 상담받으세요.
             """)
             
-            # 상담 오픈채팅방 연결 버튼
             st.markdown(
                 """
                 <a href="https://open.kakao.com/o/suIKVcci" target="_blank">
@@ -140,27 +164,54 @@ if check_password():
                 ※ 전박사가 직접 검토한 안전한 금융사만 안내합니다.
                 </p>
                 """,
-                unsafe_allow_html=True
+                unsafe_allow_html=True  # <--- 이 부분이 핵심입니다!
             )
-            # -----------------------------------------------------------
 
-    # [탭 2] 청약 가점 계산기 (기존 동일)
+    # [탭 2] 청약 가점 계산기
     with tab2:
-        st.header("청약 가점 정밀 진단")
-        no_house_years = st.slider("무주택 기간", 0, 15, 0)
-        score_1 = 32 if no_house_years >= 15 else (no_house_years * 2) + 2 if no_house_years > 0 else 0
-        
-        dependents = st.number_input("부양가족 수", 0, 6, 0)
-        score_2 = (dependents * 5) + 5
-        
-        bank_years = st.slider("통장 가입 기간", 0, 15, 0)
-        score_3 = 17 if bank_years >= 15 else bank_years + 2 if bank_years > 0 else 1
-        
-        total_score = score_1 + score_2 + score_3
-        st.divider()
-        st.metric("🏆 청약 가점", f"{total_score}점", "/ 84점")
-        if total_score >= 60: st.success("👍 당첨 가능성이 높습니다.")
-        else: st.warning("🤔 전략 수정이 필요합니다.")
+        st.header("청약 가점 정밀 진단 (84점 만점)")
+        st.info("💡 정확한 진단을 위해 본인의 정보를 선택해주세요.")
 
+        no_house_years = st.slider("무주택 기간 선택", 0, 15, 0, format="%d년 이상")
+        if no_house_years >= 15: score_1 = 32
+        elif no_house_years == 0: score_1 = 0 
+        else: score_1 = (no_house_years * 2) + 2
+        st.write(f"👉 점수: **{score_1}점**")
+
+        dependents = st.number_input("본인 제외 부양가족 수 (명)", 0, 6, 0)
+        score_2 = (dependents * 5) + 5
+        st.write(f"👉 점수: **{score_2}점**")
+
+        bank_years = st.slider("통장 가입 기간 선택", 0, 15, 0, format="%d년 이상")
+        if bank_years >= 15: score_3 = 17
+        elif bank_years == 0: score_3 = 1 
+        else: score_3 = bank_years + 2
+        st.write(f"👉 점수: **{score_3}점**")
+
+        total_score = score_1 + score_2 + score_3
+        
+        st.divider()
+        st.metric(label="🏆 전박사가 진단한 청약 가점", value=f"{total_score}점", delta="/ 84점 만점")
+        
+        if total_score >= 70:
+            st.balloons()
+            st.success("🎉 [진단] 강남권 로또 청약 당첨 안정권입니다.")
+        elif total_score >= 60:
+            st.success("👍 [진단] 서울 주요 단지 당첨 가능성이 매우 높습니다.")
+        else:
+            st.warning("🤔 [진단] 가점보다는 추첨제 등 전략 수정이 필요합니다.")
+
+    # [하단부] 개발자 크레딧
     st.divider()
-    st.markdown("<div style='text-align: center; color: grey;'>ⓒ 2026 Developed by <b>전박사 (Dr. Jeon)</b></div>", unsafe_allow_html=True)
+    st.markdown(
+        """
+        <style>
+        .footer { text-align: center; color: grey; font-size: 14px; margin-top: 50px; }
+        </style>
+        <div class="footer">
+            <p>ⓒ 2026 Developed by <b>전박사 (Dr. Jeon)</b></p>
+            <p>Real Estate Investment Lab & Data Analysis</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
