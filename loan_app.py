@@ -19,7 +19,7 @@ def check_password():
         # 오픈채팅방 유도 버튼 (입장코드 확인용)
         st.markdown(
             """
-            <a href="https://open.kakao.com/o/your_link_here" target="_blank">
+            <a href="https://open.kakao.com/o/suIKVcci"_blank">
                 <button style="width: 100%; background-color: #FEE500; color: #000000; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 20px;">
                     💬 입장 코드(비밀번호) 확인하기
                 </button>
@@ -119,7 +119,7 @@ if check_password():
             # 상담 오픈채팅방 연결 버튼
             st.markdown(
                 """
-                <a href="https://open.kakao.com/o/your_link_here" target="_blank">
+                <a href="https://open.kakao.com/o/suIKVcci"_blank">
                     <button style="
                         width: 100%;
                         background-color: #381E1F; 
