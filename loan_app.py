@@ -119,7 +119,7 @@ if check_password():
             # 상담 오픈채팅방 연결 버튼
             st.markdown(
                 """
-                <a href="https://open.kakao.com/o/suIKVcci"_blank">
+                <a href="https://open.kakao.com/o/suIKVcci" target="_blank">
                     <button style="
                         width: 100%;
                         background-color: #381E1F; 
@@ -131,6 +131,7 @@ if check_password():
                         font-weight: bold;
                         cursor: pointer;
                         box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+                        transition: 0.3s;
                         ">
                         🚀 추가 한도(히든 솔루션) 상담하기
                     </button>
